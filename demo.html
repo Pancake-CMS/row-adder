@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="import" href="bower_components/polymer/polymer.html">
+        <link rel="import" href="./row-adder.html">
+        <link rel="import" href="./demo-el.html">
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                margin: 20px;
+            }
+            row-adder {
+                border: 1px solid rgba(0, 0, 0, 0.1);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <template is="dom-bind" id="Demo">
+                <row-adder
+                    el-name$="[[elName]]"
+                    in-edit-mode$="[[inEditMode]]">
+                </row-adder>
+            </template>
+        </div>
+        <script>
+            Demo.elName = 'demo-el';
+            Demo.inEditMode = 'true';
+        </script>
+    </body>
+</html>

@@ -1,0 +1,93 @@
+<link rel="import" href="./bower_components/polymer/polymer.html">
+<link rel="import" href="./bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="./bower_components/paper-button/paper-button.html">
+
+<dom-module id="row-adder">
+    <style>
+        :host {
+            display: block;
+            position: relative;
+        }
+        .settings {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 20px;
+            height: 20px;
+            background: green;
+        }
+        form {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .controls {
+            display: none;
+        }
+
+        .show-controls {
+            display: block;
+        }
+
+        input {
+            width: 20px;
+        }
+    </style>
+    <template>
+        <template is="dom-if" if="[[inEditMode]]">
+            <span class="settings" on-click="openProperties"></span>
+            <div class="controls">
+                <form onSubmit="return false;">
+                    <span class="horizontal-contols">Grid Column Start - End : </span>
+                    <input type="text" name="grid-column-start" value="1" />
+                    <input type="text" name="grid-column-end" value="1" />
+                    <span class="vertical-contols">Grid Row Start - End : </span>
+                    <input type="text" name="grid-row-start" value="1" />
+                    <input type="text" name="grid-row-end" value="1" />
+                    <button type="submit">X</button>
+                <form>
+            </div>
+            <paper-dialog modal="true">
+                <h2>Properies for "[[elName]]" component.</h2>
+                <p>Some properties</p>
+                <div class="buttons">
+                    <paper-button dialog-dismiss>Cancel</paper-button>
+                    <paper-button dialog-confirm autofocus>Save</paper-button>
+                </div>
+            </paper-dialog>
+        </template>
+    </template>
+    <script>
+        Polymer({
+            is: 'row-adder',
+
+            properties: {
+                elName: {
+                    type: String,
+                    reflectToAttribute: true,
+                    notify: true,
+                    value: ''
+                },
+
+                inEditMode: {
+                    type: Boolean,
+                    reflectToAttribute: true,
+                    notify: true
+                }
+            },
+
+            ready: function() {
+                var el = document.createElement(this.elName);
+                if(this.inEditMode) {
+                    el.setAttribute('in-edit-mode', this.inEditMode);
+                }
+                this.appendChild(el);
+            },
+
+            openProperties: function() {
+                this.$$('paper-dialog').open();
+            }
+        });
+    </script>
+</dom-module>
