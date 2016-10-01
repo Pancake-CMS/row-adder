@@ -22,13 +22,52 @@
             <template is="dom-bind" id="Demo">
                 <row-adder
                     el-name$="[[elName]]"
-                    in-edit-mode$="[[inEditMode]]">
+                    in-edit-mode$="[[inEditMode]]"
+                    component-properties$="[[componentProperties]]">
                 </row-adder>
             </template>
         </div>
         <script>
             Demo.elName = 'demo-el';
             Demo.inEditMode = 'true';
+            Demo.componentProperties = [
+                {
+                    name: 'display',
+                    value: [
+                        {   name: 'gridColumnStart',
+                            value: 1,
+                            type: 'text',
+                            description: 'The start column location of this component'
+                        },
+                        {   name: 'gridColumnEnd',
+                            value: 1,
+                            type: 'text',
+                            description: 'The end column location of this component'
+                        },
+                        {   name: 'gridRowStart',
+                            value: 1,
+                            type: 'text',
+                            description: 'The start row location of this component'
+                        },
+                        {   name: 'gridRowEnd',
+                            value: 1,
+                            type: 'text',
+                            description: 'The end row location of this component'
+                        }
+                    ]
+                },
+                {
+                    name: 'Component Properties',
+                    value: [
+                        {
+                            name: 'productName',
+                            value: 'Some Product Name',
+                            type: 'text',
+                            description: 'The name of the product that needs to be displayed'
+                        }
+                    ]
+                }
+            ];
         </script>
     </body>
 </html>

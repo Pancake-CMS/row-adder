@@ -1,6 +1,10 @@
 <link rel="import" href="./bower_components/polymer/polymer.html">
 <link rel="import" href="./bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="./bower_components/paper-button/paper-button.html">
+<link rel="import" href="./bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="./bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="./bower_components/iron-icons/editor-icons.html">
+
 
 <dom-module id="row-adder">
     <style>
@@ -12,18 +16,21 @@
             position: absolute;
             top: 0px;
             right: 0px;
-            width: 20px;
-            height: 20px;
-            background: green;
+            height: auto;
+            background: rgba(0, 0, 0, 0.2);
+
         }
-        form {
-            position: absolute;
-            top: 0;
-            right: 0;
+        .settings-icon {
+            color: rgba(0, 0, 0, 0.4);
+            --iron-icon-height: 15px;
+            --iron-icon-width: 15px;
+            cursor: pointer;
+            margin: 5px;
         }
 
-        .controls {
-            display: none;
+        .properties-group {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 5px;
         }
 
         .show-controls {
@@ -33,27 +40,38 @@
         input {
             width: 20px;
         }
+        .controls .properties-group > h5 {
+            margin: 0;
+        }
+        .controls .properties-group > p {
+            margin: 0;
+            font-size: 12px;
+            padding-left: 10px;
+        }
     </style>
     <template>
         <template is="dom-if" if="[[inEditMode]]">
-            <span class="settings" on-click="openProperties"></span>
-            <div class="controls">
-                <form onSubmit="return false;">
-                    <span class="horizontal-contols">Grid Column Start - End : </span>
-                    <input type="text" name="grid-column-start" value="1" />
-                    <input type="text" name="grid-column-end" value="1" />
-                    <span class="vertical-contols">Grid Row Start - End : </span>
-                    <input type="text" name="grid-row-start" value="1" />
-                    <input type="text" name="grid-row-end" value="1" />
-                    <button type="submit">X</button>
-                <form>
+            <div class="settings">
+                <iron-icon class="settings-icon" icon="editor:mode-edit" on-click="openProperties"></iron-icon>
+                <iron-icon class="settings-icon" icon="icons:content-copy" on-click="copyRowAdder"></iron-icon>
+                <iron-icon class="settings-icon" icon="icons:content-cut" on-click="cutRowAdder"></iron-icon>
+                <iron-icon class="settings-icon" icon="icons:content-paste" on-click="pasteRowAdder"></iron-icon>
             </div>
-            <paper-dialog modal="true">
+            <paper-dialog modal="true" class="propeties-dialog">
                 <h2>Properies for "[[elName]]" component.</h2>
-                <p>Some properties</p>
+                <div class="controls">
+                    <template is="dom-repeat" items="[[componentProperties]]">
+                        <div class="properties-group">
+                            <h5>[[item.name]]</h5>
+                            <template is="dom-repeat" items="[[item.value]]">
+                                <p>[[item.name]]</p>
+                            </template>
+                        </div>
+                    </template>
+                </div>
                 <div class="buttons">
                     <paper-button dialog-dismiss>Cancel</paper-button>
-                    <paper-button dialog-confirm autofocus>Save</paper-button>
+                    <paper-button dialog-confirm autofocus on-click="saveAndClose">Save and Close</paper-button>
                 </div>
             </paper-dialog>
         </template>
@@ -74,6 +92,11 @@
                     type: Boolean,
                     reflectToAttribute: true,
                     notify: true
+                },
+                componentProperties: {
+                    type: Object,
+                    reflectToAttribute: true,
+                    notify: true
                 }
             },
 
@@ -86,7 +109,23 @@
             },
 
             openProperties: function() {
-                this.$$('paper-dialog').open();
+                this.$$('.propeties-dialog').open();
+            },
+
+            copyRowAdder: function() {
+
+            },
+
+            cutRowAdder: function() {
+
+            },
+
+            pasteRowAdder: function() {
+
+            },
+
+            saveAndClose: function() {
+                this.fire('component-modified');
             }
         });
     </script>
