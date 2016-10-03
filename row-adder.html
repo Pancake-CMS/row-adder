@@ -1,9 +1,9 @@
-<link rel="import" href="./bower_components/polymer/polymer.html">
-<link rel="import" href="./bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="./bower_components/paper-button/paper-button.html">
-<link rel="import" href="./bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="./bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="./bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-icons/editor-icons.html">
 
 
 <dom-module id="row-adder">
@@ -57,7 +57,7 @@
                 <iron-icon class="settings-icon" icon="icons:content-cut" on-click="cutRowAdder"></iron-icon>
                 <iron-icon class="settings-icon" icon="icons:content-paste" on-click="pasteRowAdder"></iron-icon>
             </div>
-            <paper-dialog modal="true" class="propeties-dialog">
+            <paper-dialog class="properties-dialog">
                 <h2>Properies for "[[elName]]" component.</h2>
                 <div class="controls">
                     <template is="dom-repeat" items="[[componentProperties]]">
@@ -102,14 +102,31 @@
 
             ready: function() {
                 var el = document.createElement(this.elName);
+
+                // add properties to the created element
+                for(var i = 0; i < this.componentProperties.length; i++) {
+                    if(this.componentProperties[i].name == 'componentProperties') {
+                        var data = this.componentProperties[i].value;
+                        for(var j = 0; j < data.length; j++) {
+                            el.setAttribute(this.toPascalCase(data[j].name), data[j].value);
+                        }
+                    }
+                }
+
                 if(this.inEditMode) {
                     el.setAttribute('in-edit-mode', this.inEditMode);
                 }
                 this.appendChild(el);
             },
 
+            toPascalCase: function(s) {
+                return s.replace(/\.?([A-Z])/g, function (x,y) {
+                    return "-" + y.toLowerCase();
+                }).replace(/^_/, "");
+            },
+
             openProperties: function() {
-                this.$$('.propeties-dialog').open();
+                this.$$('.properties-dialog').open();
             },
 
             copyRowAdder: function() {
