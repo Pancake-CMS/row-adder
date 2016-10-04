@@ -7,11 +7,21 @@
 
 
 <dom-module id="row-adder">
-    <style>
+    <style is="custom-style">
         :host {
+            --grid-column-start: 1;
+            --grid-column-end: 1;
+            --grid-row-start: 1;
+            --grid-row-end: 1;
+
             display: block;
             position: relative;
+            grid-column-start: var(--grid-column-start);
+            grid-column-end: var(--grid-column-end);
+            grid-row-start: var(--grid-row-start);
+            grid-row-end: var(--grid-row-end);
         }
+
         .settings {
             position: absolute;
             top: 0px;
@@ -110,6 +120,14 @@
                         for(var j = 0; j < data.length; j++) {
                             el.setAttribute(this.toPascalCase(data[j].name), data[j].value);
                         }
+                    }
+                    if(this.componentProperties[i].name == 'display') {
+                        var data = this.componentProperties[i].value;
+                        for(var j = 0; j < data.length; j++) {
+                            var prop = '--' + this.toPascalCase(data[j].name);
+                            this.customStyle[prop] = '' + data[j].value;
+                        }
+                        this.updateStyles();
                     }
                 }
 
