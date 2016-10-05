@@ -1,9 +1,11 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../iron-icons/editor-icons.html">
+<link rel="import" href="../property-editor/property-editor.html">
 
 
 <dom-module id="row-adder">
@@ -69,16 +71,18 @@
             </div>
             <paper-dialog class="properties-dialog">
                 <h2>Properies for "[[elName]]" component.</h2>
-                <div class="controls">
-                    <template is="dom-repeat" items="[[componentProperties]]">
-                        <div class="properties-group">
-                            <h5>[[item.name]]</h5>
-                            <template is="dom-repeat" items="[[item.value]]">
-                                <p>[[item.name]]</p>
-                            </template>
-                        </div>
-                    </template>
-                </div>
+                <paper-dialog-scrollable>
+                    <div class="controls">
+                        <template is="dom-repeat" items="[[componentProperties]]">
+                            <div class="properties-group">
+                                <h5>[[item.name]]</h5>
+                                <template is="dom-repeat" items="[[item.value]]">
+                                    <property-editor data$=[[item]]></property-editor>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </paper-dialog-scrollable>
                 <div class="buttons">
                     <paper-button dialog-dismiss>Cancel</paper-button>
                     <paper-button dialog-confirm autofocus on-click="saveAndClose">Save and Close</paper-button>
