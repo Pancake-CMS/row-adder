@@ -77,7 +77,7 @@
                             <div class="properties-group">
                                 <h5>[[item.name]]</h5>
                                 <template is="dom-repeat" items="[[item.value]]">
-                                    <property-editor data$=[[item]]></property-editor>
+                                    <property-editor data$=[[item]] on-property-changed="updatePropertyToTempVariable"></property-editor>
                                 </template>
                             </div>
                         </template>
@@ -111,20 +111,22 @@
                     type: Object,
                     reflectToAttribute: true,
                     notify: true
+                },
+                localTempCopy: {
+                    type: Object,
+                    reflectToAttribute: false,
+                    notify: true
                 }
             },
 
             ready: function() {
-                var el = document.createElement(this.elName);
+                this.createUserComponent();
+                this.updateGrids();
+            },
 
+            updateGrids: function() {
                 // add properties to the created element
                 for(var i = 0; i < this.componentProperties.length; i++) {
-                    if(this.componentProperties[i].name == 'componentProperties') {
-                        var data = this.componentProperties[i].value;
-                        for(var j = 0; j < data.length; j++) {
-                            el.setAttribute(this.toPascalCase(data[j].name), data[j].value);
-                        }
-                    }
                     if(this.componentProperties[i].name == 'display') {
                         var data = this.componentProperties[i].value;
                         for(var j = 0; j < data.length; j++) {
@@ -134,11 +136,57 @@
                         this.updateStyles();
                     }
                 }
+            },
+
+            /*
+             *  Lets you update a property in componentProperties
+             */
+            updateFromTempVariable: function() {
+                for(var i = 0; i < this.componentProperties.length; i++) {
+                    var data = this.componentProperties[i].value;
+                    for(var j = 0; j < data.length; j++) {
+                        if(!!this.localTempCopy[data[j].name]) {
+                            data[j].value = this.localTempCopy[data[j].name];
+                        }
+                    }
+                    this.notifyPath('componentProperties');
+                }
+                this.resetLocalTempCopy();
+                this.updateGrids();
+                this.updateUserComponent();
+            },
+
+            updateUserComponent: function() {
+                var el = this.$$(this.elName);
+                this.setComponentProperties(el);
+            },
+
+            setComponentProperties: function(el) {
+                // add properties to the created element
+                for(var i = 0; i < this.componentProperties.length; i++) {
+                    if(this.componentProperties[i].name == 'componentProperties') {
+                        var data = this.componentProperties[i].value;
+                        for(var j = 0; j < data.length; j++) {
+                            el.setAttribute(this.toPascalCase(data[j].name), data[j].value);
+                        }
+                    }
+                }
+            },
+
+            createUserComponent: function() {
+                var el = document.createElement(this.elName);
+
+                this.setComponentProperties(el);
 
                 if(this.inEditMode) {
                     el.setAttribute('in-edit-mode', this.inEditMode);
+                    this.resetLocalTempCopy();
                 }
-                this.appendChild(el);
+                Polymer.dom(this.root).appendChild(el);
+            },
+
+            resetLocalTempCopy: function() {
+                this.localTempCopy = {};
             },
 
             toPascalCase: function(s) {
@@ -164,7 +212,15 @@
             },
 
             saveAndClose: function() {
-                this.fire('component-modified');
+                this.updateFromTempVariable()
+                this.fire('component-modified', {
+                    name: this.elName,
+                    properties: this.componentProperties
+                });
+            },
+
+            updatePropertyToTempVariable: function(e, detail) {
+                this.localTempCopy[detail.name] = detail.value;
             }
         });
     </script>

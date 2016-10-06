@@ -15,6 +15,10 @@ bower install --save pancake-cms-row-adder
 | in-edit-mode | Boolean | Are we rendering `row-adder` in edit mode or not. This element shows a lot of options when in edit mode | `true` or `false` |
 | component-properties | Object | This is the main part of `row-adder` element. Its main purpose is to let users modify the properties given in this object. | Please refer the section __component-properties__ for more information on its structure |
 
+## Events
+
+The element triggers a `component-modified` event when anything changes in its properties. This happens when the user changes anything in the properties dialog.
+
 ## component-properties
 
 The most basic example of this object is as follows
