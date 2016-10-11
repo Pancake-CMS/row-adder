@@ -26,27 +26,28 @@ The most basic example of this object is as follows
 ```javascript
 [
     {
-        name: 'display',
-        value: [
-            {   name: 'gridColumnStart',
-                value: 1,
-                type: 'text',
-                description: 'The start column location of this component'
-            },
-            {   name: 'gridColumnEnd',
-                value: 1,
-                type: 'text',
-                description: 'The end column location of this component'
-            },
-            {   name: 'gridRowStart',
-                value: 1,
-                type: 'text',
-                description: 'The start row location of this component'
-            },
-            {   name: 'gridRowEnd',
-                value: 1,
-                type: 'text',
-                description: 'The end row location of this component'
+        "name" : "display",
+        "value" : [
+            {
+                "description" : "The start column location of this component",
+                "name" : "gridColumnStart",
+                "type" : "text",
+                "value" : "1"
+            }, {
+                "description" : "The end column location of this component",
+                "name" : "gridColumnEnd",
+                "type" : "text",
+                "value" : "12"
+            }, {
+                "description" : "The start row location of this component",
+                "name" : "gridRowStart",
+                "type" : "text",
+                "value" : ""
+            }, {
+                "description" : "The end row location of this component",
+                "name" : "gridRowEnd",
+                "type" : "text",
+                "value" : ""
             }
         ]
     },

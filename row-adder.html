@@ -11,10 +11,10 @@
 <dom-module id="row-adder">
     <style is="custom-style">
         :host {
-            --grid-column-start: 1;
-            --grid-column-end: 1;
-            --grid-row-start: 1;
-            --grid-row-end: 1;
+            --grid-column-start: initial;
+            --grid-column-end: initial;
+            --grid-row-start: initial;
+            --grid-row-end: initial;
 
             display: block;
             position: relative;
@@ -130,8 +130,10 @@
                     if(this.componentProperties[i].name == 'display') {
                         var data = this.componentProperties[i].value;
                         for(var j = 0; j < data.length; j++) {
-                            var prop = '--' + this.toPascalCase(data[j].name);
-                            this.customStyle[prop] = '' + data[j].value;
+                            if(!!data[j].value) {
+                                var prop = '--' + this.toPascalCase(data[j].name);
+                                this.customStyle[prop] = '' + data[j].value;
+                            }
                         }
                         this.updateStyles();
                     }
