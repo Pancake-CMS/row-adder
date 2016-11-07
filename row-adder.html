@@ -116,6 +116,12 @@
                     type: Object,
                     reflectToAttribute: false,
                     notify: true
+                },
+
+                path: {
+                    type: String,
+                    reflectToAttribute: true,
+                    notify: true
                 }
             },
 
@@ -175,6 +181,10 @@
                 }
             },
 
+            setComponentPathProperty: function(el) {
+                el.setAttribute('path', this.path + this.elName + '/');
+            },
+
             createUserComponent: function() {
                 var el = document.createElement(this.elName);
 
@@ -184,6 +194,8 @@
                     el.setAttribute('in-edit-mode', this.inEditMode);
                     this.resetLocalTempCopy();
                 }
+                this.setComponentPathProperty(el);
+
                 Polymer.dom(this.root).appendChild(el);
             },
 
