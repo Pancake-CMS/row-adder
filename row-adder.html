@@ -52,6 +52,9 @@
         input {
             width: 20px;
         }
+        .controls {
+            text-align: left;
+        }
         .controls .properties-group > h5 {
             margin: 0;
         }
@@ -122,6 +125,13 @@
                     type: String,
                     reflectToAttribute: true,
                     notify: true
+                },
+
+                id: {
+                    type: String,
+                    reflectToAttribute: true,
+                    notify: true,
+                    value: ''
                 }
             },
 
@@ -196,6 +206,8 @@
                 }
                 this.setComponentPathProperty(el);
 
+                this.updateComponentDivs(el);
+
                 Polymer.dom(this.root).appendChild(el);
             },
 
@@ -235,6 +247,24 @@
 
             updatePropertyToTempVariable: function(e, detail) {
                 this.localTempCopy[detail.name] = detail.value;
+            },
+
+            /*
+             * This function checks for content doms and appends css-grid after it
+             */
+            updateComponentDivs: function(el) {
+                var contentDivs = el.querySelectorAll('content-slot');
+
+                for(var i =0 ; i < contentDivs.length; i++) {
+                    var cssGrid = document.createElement('css-grid'),
+                        contentDivId = contentDivs[i].getAttribute('id'),
+                        path = this.path + this.id + '/components/' + contentDivId + '/';
+
+                    cssGrid.setAttribute('path', path);
+                    cssGrid.setAttribute('in-edit-mode', 'true');
+                    cssGrid.setAttribute('components', '[]');
+                    contentDivs[i].appendChild(cssGrid);
+                }
             }
         });
     </script>
