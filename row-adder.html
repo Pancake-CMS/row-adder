@@ -112,7 +112,7 @@
                 },
                 componentProperties: {
                     type: Object,
-                    reflectToAttribute: true,
+                    reflectToAttribute: false,
                     notify: true
                 },
                 localTempCopy: {
@@ -132,6 +132,13 @@
                     reflectToAttribute: true,
                     notify: true,
                     value: ''
+                },
+
+                inContentMode: {
+                    type: Boolean,
+                    reflectToAttribute: true,
+                    notify: true,
+                    value: false
                 }
             },
 
@@ -200,6 +207,10 @@
 
                 this.setComponentProperties(el);
 
+                if(this.inContentMode) {
+                    el.setAttribute('in-content-mode', this.inContentMode);
+                }
+
                 if(this.inEditMode) {
                     el.setAttribute('in-edit-mode', this.inEditMode);
                     this.resetLocalTempCopy();
@@ -239,9 +250,14 @@
 
             saveAndClose: function() {
                 this.updateFromTempVariable()
-                this.fire('component-modified', {
-                    name: this.elName,
-                    properties: this.componentProperties
+                this.fire('iron-signal', {
+                    name: 'template-operation',
+                    data: {
+                        operation: 'component-modified',
+                        path: this.path,
+                        properties: this.componentProperties,
+                        id: this.id
+                    }
                 });
             },
 
