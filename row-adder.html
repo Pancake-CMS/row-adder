@@ -254,14 +254,15 @@
              */
             updateComponentDivs: function(el) {
                 var contentDivs = el.querySelectorAll('content-slot');
-
                 for(var i =0 ; i < contentDivs.length; i++) {
                     var cssGrid = document.createElement('css-grid'),
                         contentDivId = contentDivs[i].getAttribute('id'),
                         path = this.path + this.id + '/components/' + contentDivId + '/';
 
                     cssGrid.setAttribute('path', path);
-                    cssGrid.setAttribute('in-edit-mode', 'true');
+                    if(this.inEditMode) {
+                        cssGrid.setAttribute('in-edit-mode', this.inEditMode);
+                    }
                     cssGrid.setAttribute('components', '[]');
                     contentDivs[i].appendChild(cssGrid);
                 }
