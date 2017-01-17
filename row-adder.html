@@ -88,7 +88,7 @@
                 </paper-dialog-scrollable>
                 <div class="buttons">
                     <paper-button dialog-dismiss>Cancel</paper-button>
-                    <paper-button dialog-confirm autofocus on-click="saveAndClose">Save and Close</paper-button>
+                    <paper-button dialog-confirm on-click="saveAndClose">Save and Close</paper-button>
                 </div>
             </paper-dialog>
         </template>
@@ -139,6 +139,11 @@
                     reflectToAttribute: true,
                     notify: true,
                     value: false
+                },
+
+                innercomponents: {
+                    type: Object,
+                    notify: true
                 }
             },
 
@@ -218,7 +223,8 @@
                 }
                 this.setComponentPathProperty(el);
 
-                this.updateComponentDivs(el);
+                el.innercomponents = this.innercomponents;
+                el.setAttribute('path', this.path + this.id)
 
                 Polymer.dom(this.root).appendChild(el);
             },
@@ -264,25 +270,6 @@
 
             updatePropertyToTempVariable: function(e, detail) {
                 this.localTempCopy[detail.name] = detail.value;
-            },
-
-            /*
-             * This function checks for content doms and appends css-grid after it
-             */
-            updateComponentDivs: function(el) {
-                var contentDivs = el.querySelectorAll('content-slot');
-                for(var i =0 ; i < contentDivs.length; i++) {
-                    var cssGrid = document.createElement('css-grid'),
-                        contentDivId = contentDivs[i].getAttribute('id'),
-                        path = this.path + this.id + '/components/' + contentDivId + '/';
-
-                    cssGrid.setAttribute('path', path);
-                    if(this.inEditMode) {
-                        cssGrid.setAttribute('in-edit-mode', this.inEditMode);
-                    }
-                    cssGrid.setAttribute('components', '[]');
-                    contentDivs[i].appendChild(cssGrid);
-                }
             }
         });
     </script>
