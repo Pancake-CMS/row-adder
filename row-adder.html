@@ -144,6 +144,12 @@
                 innercomponents: {
                     type: Object,
                     notify: true
+                },
+
+                usercontent: {
+                    type: Object,
+                    notify: true,
+                    reflectToAttribute: false
                 }
             },
 
@@ -216,6 +222,9 @@
                     el.setAttribute('in-content-mode', this.inContentMode);
                     el.setAttribute('parent-id', this.id);
                 }
+
+                // Setting content to user components
+                el.usercontent = this.usercontent;
 
                 if(this.inEditMode) {
                     el.setAttribute('in-edit-mode', this.inEditMode);
