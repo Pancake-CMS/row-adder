@@ -161,7 +161,7 @@
             updateGrids: function() {
                 // add properties to the created element
                 for(var i = 0; i < this.componentProperties.length; i++) {
-                    if(this.componentProperties[i].name == 'display') {
+                    if(!!this.componentProperties[i] && this.componentProperties[i].name == 'display') {
                         var data = this.componentProperties[i].value;
                         for(var j = 0; j < data.length; j++) {
                             if(!!data[j].value) {
@@ -200,8 +200,8 @@
             setComponentProperties: function(el) {
                 // add properties to the created element
                 for(var i = 0; i < this.componentProperties.length; i++) {
-                    if(this.componentProperties[i].name == 'componentProperties') {
-                        var data = this.componentProperties[i].value;
+                    if(!!this.componentProperties[i] && this.componentProperties[i].name == 'componentProperties') {
+                        var data = this.componentProperties[i].value || [];
                         for(var j = 0; j < data.length; j++) {
                             el.setAttribute(this.toPascalCase(data[j].name), data[j].value);
                         }
