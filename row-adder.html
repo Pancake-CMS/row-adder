@@ -30,7 +30,7 @@
             right: 0px;
             height: auto;
             background: rgba(0, 0, 0, 0.2);
-
+            z-index: 90001;
         }
         .settings-icon {
             color: rgba(0, 0, 0, 0.4);
@@ -179,7 +179,7 @@
              */
             updateFromTempVariable: function() {
                 for(var i = 0; i < this.componentProperties.length; i++) {
-                    var data = this.componentProperties[i].value;
+                    var data = this.componentProperties[i].value || [];
                     for(var j = 0; j < data.length; j++) {
                         if(!!this.localTempCopy[data[j].name]) {
                             data[j].value = this.localTempCopy[data[j].name];
