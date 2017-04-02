@@ -159,6 +159,9 @@
             },
 
             updateGrids: function() {
+                if(!this.componentProperties) {
+                    return;
+                }
                 // add properties to the created element
                 for(var i = 0; i < this.componentProperties.length; i++) {
                     if(!!this.componentProperties[i] && this.componentProperties[i].name == 'display') {
@@ -198,6 +201,9 @@
             },
 
             setComponentProperties: function(el) {
+                if(!this.componentProperties) {
+                    return;
+                }
                 // add properties to the created element
                 for(var i = 0; i < this.componentProperties.length; i++) {
                     if(!!this.componentProperties[i] && this.componentProperties[i].name == 'componentProperties') {
@@ -215,26 +221,20 @@
 
             createUserComponent: function() {
                 var el = document.createElement(this.elName);
-
                 this.setComponentProperties(el);
-
                 if(this.inContentMode) {
                     el.setAttribute('in-content-mode', this.inContentMode);
                     el.setAttribute('parent-id', this.id);
                 }
-
                 // Setting content to user components
                 el.usercontent = this.usercontent;
-
                 if(this.inEditMode) {
                     el.setAttribute('in-edit-mode', this.inEditMode);
                     this.resetLocalTempCopy();
                 }
                 this.setComponentPathProperty(el);
-
                 el.innercomponents = this.innercomponents;
                 el.setAttribute('path', this.path + this.id)
-
                 Polymer.dom(this.root).appendChild(el);
             },
 
